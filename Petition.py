@@ -51,7 +51,7 @@ def save_scv(signers, filename):
         for signer in signers:
             writer.writerow([signer])
 def main():   
-    title = get_petition_name(petition)
+    title = get_petition_name(petition)[:110]
     signers = parse(petition)
     
     filename = title+' ('+petition+')'
