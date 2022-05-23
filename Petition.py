@@ -50,7 +50,8 @@ def save_scv(signers, filename):
 
         for signer in signers:
             writer.writerow([signer])
-def main():   
+def main():
+    print('Parsing data... Please wait... It can take a few minutes...')
     title = get_petition_name(petition)[:110]
     signers = parse(petition)
     
