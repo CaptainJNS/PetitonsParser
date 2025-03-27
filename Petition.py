@@ -26,13 +26,27 @@ def get_petition_name(petition_id):
 def parse(petition_id):
     signers = []
     pages = get_page_count(get_html(BASE_URL + str(petition_id)))
-    for page in range(pages):        
+    for page in range(pages):
+        pages_progress(page, pages) # prints progress
         html = get_html(BASE_URL + petition_id + '/votes/' + str(page + 1))
         soup = BeautifulSoup(html, 'html.parser')        
         for name in soup.find_all('div', class_ = 'table_cell name'):        
             signers.append(name.text)
     
     return signers
+
+def pages_progress(page, pages):
+    current_page = page + 1
+    if pages > 10_000:
+        (page % 1000) == 0 and print(f'Parsing page {current_page} of {pages}')
+    elif pages > 1000:
+        (page % 100) == 0 and print(f'Parsing page {current_page} of {pages}')
+    elif pages > 100:
+        (page % 10) == 0 and print(f'Parsing page {current_page} of {pages}')
+    elif pages > 10:
+        (page % 5) == 0 and print(f'Parsing page {current_page} of {pages}')
+    else:
+        print(f'Parsing page {current_page} of {pages}')
 
 def save_excel(signers, filename):
     wb = xlwt.Workbook()
@@ -57,7 +71,7 @@ def main():
     signers = parse(petition_id)
     
     save_excel(signers, title)
-    save_scv(signers, title)
+    # save_scv(signers, title)
     print('Done.')
     
 if __name__ == '__main__':
